@@ -1,0 +1,17 @@
+{#
+{% extends 'base.html.twig' %}
+#}
+{% block title %}Home{% endblock %}
+
+
+
+{% block body %}
+{% if not user %}
+{{ include('navbar.html.twig') }}
+{% endif %}
+
+    <h1>Welcome to AllYourMemes.org{% if user %} {{user[1]}} {% endif %}</h1>
+    <div style="text-align:center;">
+    <img src="memeFile/home.jpg" style="max-width:95vw;background-color:#AAAAAA;"/>
+    </div>
+{% endblock %}

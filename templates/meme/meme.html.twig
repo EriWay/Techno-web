@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+<h1>Les memes</h1>
+<div style="display:flex;flex-wrap: wrap;justify-content: space-evenly;">
+    {% for img in mem %}
+    <div class="card" style="width: 18rem;">
+        <img class="card-img-top" src="{{img}}" alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title">Meme</h5>
+            <p class="card-text">Quality memes</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

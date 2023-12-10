@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+{% block body %}
+<style>
+input[type=text] {
+    background-color: #AAAA;
+    border: none;
+    border-radius:4px;
+    border-bottom: 2px solid red;
+}
+input[type=text]:focus {
+    background-color: #FFF;
+    color: black;
+    border: none;
+    border-radius:4px;
+    border-bottom: 2px solid blue;
+}
+input[type=email] {
+    background-color: #AAAA;
+    border: none;
+    border-radius:4px;
+    border-bottom: 2px solid red;
+}
+input[type=email]:focus {
+    background-color: #FFF;
+    color: black;
+    border: none;
+    border-radius:4px;
+    border-bottom: 2px solid blue;
+}
+input[type=password] {
+    background-color: #AAAA;
+    border: none;
+    border-radius:4px;
+    border-bottom: 2px solid red;
+}
+input[type=password]:focus {
+    background-color: #FFF;
+    color: black;
+    border: none;
+    border-radius:4px;
+    border-bottom: 2px solid blue;
+}
+input[type=submit] {
+    background-color: #3CBC8D;
+    font-size:1.5em;
+    color: white;
+    border: none;
+    min-width:200px;
+}
+
+</style>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription</title>
+</head>
+<body>
+    <h1>Inscription</h1>
+
+    <form method="post" action="" style="display:flex;flex-wrap: wrap;flex-direction: column;align-content: center;">
+        <label for="nom">Nom :</label>
+        <input type="text" id="nom" name="nom" required style="width:70vw"><br>
+
+        <label for="prenom">Prénom :</label>
+        <input type="text" id="prenom" name="prenom" required style="width:70vw"><br>
+
+        <label for="email">E-mail :</label>
+        <input type="email" id="email" name="email" required style="width:70vw"><br>
+
+        <label for="mot_de_passe">Mot de passe :</label>
+        <input type="password" id="mot_de_passe" name="mot_de_passe" required style="width:70vw"><br>
+
+        <label for="confirmation_mot_de_passe">Confirmez le mot de passe :</label>
+        <input type="password" id="confirmation_mot_de_passe" name="confirmation_mot_de_passe" required style="width:70vw"><br>
+        {% for err in errors %}
+        Err:{{err}}<br>
+        {% endfor %}
+
+        <input type="submit" value="S'inscrire">
+    </form>
+</body>
+
+{% endblock %}
