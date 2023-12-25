@@ -10,6 +10,7 @@ $memes = array();
 try {
     if (is_dir($folder)) {
         $memes = glob($folder . '*.{jpg,jpeg,png,gif}', GLOB_BRACE);
+        
     } else {
         echo 'Le répertoire n\'existe pas.';
     }

@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors[] = "l'email est déjà utilisé !!";
         return new Response($twig->render('register/register.html.twig', ['errors' => $errors]));
     }
-
+    $mdp = password_hash($mot_de_passe, PASSWORD_DEFAULT);
     // Si pas d'erreurs, insérez dans la base de données
     if (empty($errors) || $emailExists) {
         $query = "INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe) VALUES (:nom, :prenom, :email, :mot_de_passe)";
@@ -43,10 +43,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindParam(':nom', $nom);
         $stmt->bindParam(':prenom', $prenom);
         $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':mot_de_passe', $mot_de_passe);
+        $stmt->bindParam(':mot_de_passe', $mdp);
 
         if ($stmt->execute()) {
-            // Redirigez l'utilisateur vers une autre page après l'inscription réussie
+            // Redirige l'utilisateur vers une autre page après l'inscription réussie
             return new Response($twig->render('register/confirmation.html.twig', ['user' => $prenom]));
 
         } else {
