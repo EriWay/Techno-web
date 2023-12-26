@@ -12,7 +12,8 @@
     {% block javascripts_head %}{% endblock %}
 </head>
 <body>
-{{ include('navbar.html.twig') }}
+{{id}}
+{% include 'navbar.html.twig' with {id} %}
 <div class="container">
     {% block body %}{% endblock %}
 </div>

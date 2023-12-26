@@ -38,16 +38,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $mdp = password_hash($mot_de_passe, PASSWORD_DEFAULT);
     // Si pas d'erreurs, insérez dans la base de données
     if (empty($errors) || $emailExists) {
+        $avatarPath = "src/Avatars/Avatar";
         $query = "INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe) VALUES (:nom, :prenom, :email, :mot_de_passe)";
         $stmt = $pdo->prepare($query);
         $stmt->bindParam(':nom', $nom);
         $stmt->bindParam(':prenom', $prenom);
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':mot_de_passe', $mdp);
+        
 
         if ($stmt->execute()) {
+            //echo '<pre>'; print_r($_FILES); echo '</pre>';
+            if($_FILES){
+                $stmt = $pdo->prepare('SELECT id FROM utilisateurs WHERE email = :email');
+                $stmt->bindParam(':email', $email);
+                $stmt->execute();
+                $id = $stmt->fetchAll();
+
+                $stmt = $pdo->prepare('UPDATE utilisateurs SET avatar = :avatar WHERE email = :email');
+                $stmt->bindParam(':email', $email);
+                $thePath = $avatarPath . $id[0][0];
+                $stmt->bindParam(':avatar', $thePath);
+                $stmt->execute();
+
+                $nameFile = $_FILES['avatar']['name'];
+                $tmpFile = $_FILES['avatar']['tmp_name'];
+                $typeFile = explode('.', $nameFile)[1];
+
+                $correctType = array("png",'jpg');
+                $uploadDir = dirname(dirname(__DIR__)) ."\public\Avatars/";
+
+                if (in_array($typeFile, $correctType)) {
+                    echo"correct type file";
+                    if (move_uploaded_file($tmpFile,$uploadDir . "avatar" . $id[0][0] . ".png")) {
+                        echo"Uploaded !";
+                    }
+                } else {
+                    echo"not correct type";
+                }
+            }
             // Redirige l'utilisateur vers une autre page après l'inscription réussie
-            return new Response($twig->render('register/confirmation.html.twig', ['user' => $prenom]));
+            return new Response($twig->render('register/confirmation.html.twig', ['user' => $prenom,'id'=> $id[0][0]]));
 
         } else {
             $errors[] = 'Erreur lors de l\'inscription. Veuillez réessayer.';

@@ -22,14 +22,24 @@
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav flex-row">
-                <li><a href="/">Home</a></li>
+                <li><a href="/{{id}}">Home</a></li>
                 <li><a href="/hello">Hello</a></li>
+                {% if id != -1 %}
+                <li><a href="/meme/{{id}}">Memes</a></li>
+                {% else %}
                 <li><a href="/meme">Memes</a></li>
+                {% endif %}
             </ul>
             <ul class="nav navbar-nav navbar-right flex-row">
             
+                {% if id != -1 %}
+                <span class="float-right">
+                    <img class="img-thumbnail rounded-circle" style="max-width:75px;" src="../../../Avatars/avatar{{id}}.png" alt="Avatar">
+                </span>
+                {% else %}
                 <li><a href="/register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
                 <li><a href="/connect"><span class="glyphicon glyphicon-user"></span> Sign In</a></li>
+                {% endif %}
             
             </ul>
         </div>
