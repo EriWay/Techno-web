@@ -3,9 +3,10 @@
 namespace Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Repository\UserRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'publications')]
 class Publication
 {
