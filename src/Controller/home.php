@@ -1,11 +1,16 @@
 <?php
 
-/** @var Twig\Environment $twig 
- * @var int $id
-*/
+/** @var Twig\Environment $twig */
 
 use Symfony\Component\HttpFoundation\Response;
 
-$id= $_GET['id'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    session_start();
+    echo'Deconnexion';
+    session_destroy();
+}
 
-return new Response($twig->render('home/home.html.twig', ['id' => $id]));
+session_start();
+print_r($_SESSION);
+
+return new Response($twig->render('home/home.html.twig', ['session'=>$_SESSION, 'name'=> $_SESSION['username']]));

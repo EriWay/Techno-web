@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 $dbPath = dirname(__DIR__) . '/DB/db.sqlite';
 $pdo = new PDO('sqlite:' . $dbPath);
 
-$id = $_GET['id'];
+session_start();
 
 // Initialisation des erreurs
 $errors = [];
@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt->execute();
 
                 // Rediriger vers la page des memes
-                header("Location: /meme?id={$id}");
+                header("Location: /meme");
                 exit;
             } else {
                 $errors[] = "Erreur lors de l'upload de l'image.";
@@ -55,4 +55,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-return new Response($twig->render('meme/postmeme.html.twig', ['errors' => $errors, 'id' => $id]));
+return new Response($twig->render('meme/postmeme.html.twig', ['errors' => $errors, 'session'=>$_SESSION]));

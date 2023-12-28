@@ -8,6 +8,8 @@ use Doctrine\DBAL\Driver\Connection;
  * @var int $id
  */
 
+session_start();
+
 // Récupération des paramètres GET
 $id = isset($_GET['id']) ? $_GET['id'] : null;
 $memename = isset($_GET['name']) ? $_GET['name'] : null;
@@ -23,4 +25,4 @@ foreach ($memes as &$meme) {
 }
 
 // Vérifier si les clés existent avant de les utiliser
-return new Response($twig->render('meme/meme.html.twig', ['memes' => $memes, 'id' => $id, 'memename' => $memename]));
+return new Response($twig->render('meme/meme.html.twig', ['memes' => $memes,'session'=>$_SESSION, 'memename' => $memename]));
