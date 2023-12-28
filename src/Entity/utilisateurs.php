@@ -43,6 +43,10 @@ class User
     #[Assert\NotBlank]
     private string $mot_de_passe;
 
+    #[ORM\Column(type:'string')]
+    #[Assert\NotBlank]
+    private string $avatar;
+
     public function getId(): ?int
     {
         return $this->id;

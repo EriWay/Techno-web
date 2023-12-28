@@ -3,18 +3,29 @@
 {% block title %}Home{% endblock %}
 
 {% block body %}
-<h1>Les memes</h1>
-<div style="display:flex;flex-wrap: wrap;justify-content: space-evenly;">
-    {% for img in mem %}
-    <div class="card" style="width: 18rem;">
-        <img class="card-img-top" src="{{img}}" alt="Card image cap">
-        <div class="card-body">
-            <h5 class="card-title">Meme</h5>
-            <p class="card-text">Quality memes</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
+{% if memename %}
+    <h1> {{memename|slice(0,-4)}}</h1> 
+    <img src="../../../memeFile/{{memename}}" style="max-width:90vw"/>
+
+{% else %}
+    <h1>Les memes</h1>
+    <div style="display:flex;flex-wrap: wrap;justify-content: space-evenly;">
+        {% for img in mem %}
+        <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="../../../{{img}}" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">{{img|slice(9,-4)}}</h5>
+                <p class="card-text">Quality memes</p>
+                <a href="/meme?id={{id}}&name={{img|slice(9)}}" class="btn btn-primary">Go somewhere</a>
+            </div>
+        </div>
+        {% endfor %}
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">Add Yours</h5>
+                <a href="/meme/post?id={{id}}" class="btn btn-primary">Add yours !</a>
+            </div>
         </div>
     </div>
-    {% endfor %}
-</div>
-
+{% endif %}
 {% endblock %}
