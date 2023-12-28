@@ -1,6 +1,8 @@
 <?php
 
-/** @var Twig\Environment $twig */
+/** @var Twig\Environment $twig 
+ * @var int $id
+*/
 
 use Symfony\Component\HttpFoundation\Response;
 
@@ -17,4 +19,4 @@ try {
     echo 'Exception : ',  $e->getMessage(), "\n";
 }
 
-return new Response($twig->render('meme/meme.html.twig', ['mem' => $memes]));
+return new Response($twig->render('meme/meme.html.twig', ['mem' => $memes, 'id'=>$id]));
