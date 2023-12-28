@@ -12,7 +12,7 @@
     {% block javascripts_head %}{% endblock %}
 </head>
 <body>
-{{id}}
+{{session['userid']}}
 {% include 'navbar.html.twig' with {id} %}
 <div class="container">
     {% block body %}{% endblock %}

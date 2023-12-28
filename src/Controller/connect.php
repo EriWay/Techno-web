@@ -25,7 +25,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user=array(0=>$res[0][0],1=>$res[0][1],2=>$res[0][2],3=>$res[0][3]);
         if (password_verify($mot_de_passe,$user[2])) {
             // Redirigez l'utilisateur vers une autre page après l'inscription réussie
-            return new Response($twig->render('home/home.html.twig',['user' => $user,'id'=> $user[3]]));
+            session_start();
+            $_SESSION['username'] = $user[0];
+            $_SESSION['userid'] = $user[3];
+            $_SESSION['sessionid'] = session_id();
+            header("Location: /");
+            die();
 
         } else {
             $errors[] = "l'adresse email ou le mot de passe est invalide";

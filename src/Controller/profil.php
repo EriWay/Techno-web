@@ -6,4 +6,4 @@ use Symfony\Component\HttpFoundation\Response;
 
 $id= $_GET['id'];
 
-return new Response($twig->render('profil/profil.html.twig'));
+return new Response($twig->render('profil/profil.html.twig',['id'=> $id]));

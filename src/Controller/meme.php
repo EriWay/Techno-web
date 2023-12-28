@@ -6,7 +6,8 @@
 
 use Symfony\Component\HttpFoundation\Response;
 
-$id= $_GET['id'];
+session_start();
+
 $memename = $_GET['name'];
 
 $folder = 'memeFile/'; 
@@ -22,4 +23,4 @@ try {
     echo 'Exception : ',  $e->getMessage(), "\n";
 }
 
-return new Response($twig->render('meme/meme.html.twig', ['mem' => $memes, 'id'=>$id, 'memename'=>$memename]));
+return new Response($twig->render('meme/meme.html.twig', ['mem' => $memes,'session'=>$_SESSION, 'memename'=>$memename]));

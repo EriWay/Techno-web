@@ -23,6 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Vérifiez si les mots de passe correspondent
     if ($mot_de_passe !== $confirmation_mot_de_passe) {
         $errors[] = 'Les mots de passe ne correspondent pas.';
+        echo "<script>alert('Les mots de passent ne correspondent pas');</script>";
     }
 
     // Vérifiez si l'adresse e-mail existe déjà dans la base de données
@@ -33,18 +34,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $emailExists = $stmt->fetchColumn();
     if ($emailExists) {
         $errors[] = "l'email est déjà utilisé !!";
-        return new Response($twig->render('register/register.html.twig', ['errors' => $errors]));
+        echo "<script>alert('E-mail déjà utilisé');</script>";
     }
     $mdp = password_hash($mot_de_passe, PASSWORD_DEFAULT);
     // Si pas d'erreurs, insérez dans la base de données
     if (empty($errors) || $emailExists) {
         $avatarPath = "src/Avatars/Avatar";
-        $query = "INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe) VALUES (:nom, :prenom, :email, :mot_de_passe)";
+        $avatartmp = "src/Avatars/Avatar";
+        $query = "INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe, avatar) VALUES (:nom, :prenom, :email, :mot_de_passe, :avatar)";
         $stmt = $pdo->prepare($query);
         $stmt->bindParam(':nom', $nom);
         $stmt->bindParam(':prenom', $prenom);
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':mot_de_passe', $mdp);
+        $stmt->bindParam(':avatar', $avatartmp);
         
 
         if ($stmt->execute()) {
@@ -78,6 +81,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
             // Redirige l'utilisateur vers une autre page après l'inscription réussie
+            session_start();
+            $_SESSION['username'] = $nom;
+            $_SESSION['userid'] = $id[0][0];
+            $_SESSION['sessionid'] = session_id();
+            
             return new Response($twig->render('register/confirmation.html.twig', ['user' => $prenom,'id'=> $id[0][0]]));
 
         } else {

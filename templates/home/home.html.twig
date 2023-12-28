@@ -7,8 +7,9 @@
 
 {% block body %}
 
-    <h1>Welcome to AllYourMemes.org{% if user %} {{user[1]}} {% endif %}</h1>
+    <h1>Welcome to AllYourMemes.org {{session['username']}}</h1>
     <div style="text-align:center;">
+    ID de session : {{session['userid']}}<br>
     <img src="memeFile/home.jpg" style="max-width:95vw;background-color:#AAAAAA;"/>
     </div>
     <button style="display:block;
