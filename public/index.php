@@ -9,8 +9,13 @@ use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
+
+// Initialise la session Symfony
+$session = new Session();
+$session->start();
 
 $request = Request::createFromGlobals();
 

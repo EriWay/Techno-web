@@ -8,7 +8,7 @@ $pdo = new PDO('sqlite:' . $dbPath);
 
 // Initialisation des erreurs
 $errors = [];
-
+echo 'isConnected: ' . $_SESSION['isConnected'];
 
 // Traitement du formulaire
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -26,9 +26,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user=array(0=>$res[0][0],1=>$res[0][1]);
 
         if ($res) {
-            // Redirigez l'utilisateur vers une autre page après l'inscription réussie
-            return new Response($twig->render('home/home.html.twig',['user' => $user]));
 
+            $session->set('isConnected', true);
+            // Après avoir défini la variable de session isConnected à true
+            $_SESSION['isConnected'] = true;
+            
+            // Ajoutez ceci pour afficher le contenu de la session
+            var_dump($_SESSION);
+            // Redirigez l'utilisateur vers une autre page après l'inscription réussie
+            return new Response($twig->render('home/home.html.twig', [
+                'user' => $user,
+                'isConnected' => $_SESSION['isConnected'] ?? false, // Utilise la valeur par défaut false si la session n'est pas définie
+            ]));
+            
         } else {
             $errors[] = "l'adresse email ou le mot de passe est invalide";
         }

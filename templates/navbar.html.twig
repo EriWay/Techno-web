@@ -25,17 +25,21 @@
                 <li><a href="/">Home</a></li>
                 <li><a href="/hello">Hello</a></li>
                 <li><a href="/meme">Memes</a></li>
+                <li>{{ isConnected }}</li>
             </ul>
             <ul class="nav navbar-nav navbar-right flex-row">
-            
-                <li><a href="/register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-                <li><a href="/connect"><span class="glyphicon glyphicon-user"></span> Sign In</a></li>
-            
+                {{ app.session.get('isConnected') ? 'Connected' : 'Not Connected' }}                
+                {% if isConnected  %}
+                    <li><a href="/profil"><span class="glyphicon glyphicon-user"></span> View My Profile</a></li>
+                    <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Log Out</a></li>
+                {% else %}
+                    <li><a href="/register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                    <li><a href="/connect"><span class="glyphicon glyphicon-user"></span> Sign In</a></li>
+                {% endif %}
             </ul>
         </div>
     </div>
 </nav>
-
 
 </body>
 </html>
