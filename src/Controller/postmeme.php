@@ -6,6 +6,8 @@ use Symfony\Component\HttpFoundation\Response;
 $dbPath = dirname(__DIR__) . '/DB/db.sqlite';
 $pdo = new PDO('sqlite:' . $dbPath);
 
+$id= $_GET['id'];
+
 // Initialisation des erreurs
 $errors = [];
 
@@ -30,4 +32,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-return new Response($twig->render('meme/postmeme.html.twig', ['errors' => $errors]));
+return new Response($twig->render('meme/postmeme.html.twig', ['errors' => $errors, 'id'=>$id]));
