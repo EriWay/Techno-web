@@ -6,8 +6,6 @@ use Symfony\Component\HttpFoundation\Response;
 $dbPath = dirname(__DIR__) . '/DB/db.sqlite';
 $pdo = new PDO('sqlite:' . $dbPath);
 
-$id= $_GET['id'];
-
 // Initialisation des erreurs
 $errors = [];
 

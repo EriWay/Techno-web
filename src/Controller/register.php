@@ -39,8 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $mdp = password_hash($mot_de_passe, PASSWORD_DEFAULT);
     // Si pas d'erreurs, insérez dans la base de données
     if (empty($errors) || $emailExists) {
-        $avatarPath = "src/Avatars/Avatar";
-        $avatartmp = "src/Avatars/Avatar";
+        $avatarPath = "Avatars/Avatar";
+        $avatartmp = "Avatars/Avatar";
         $query = "INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe, avatar) VALUES (:nom, :prenom, :email, :mot_de_passe, :avatar)";
         $stmt = $pdo->prepare($query);
         $stmt->bindParam(':nom', $nom);
@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 $stmt = $pdo->prepare('UPDATE utilisateurs SET avatar = :avatar WHERE email = :email');
                 $stmt->bindParam(':email', $email);
-                $thePath = $avatarPath . $id[0][0];
+                $thePath = $avatarPath . $id[0][0] . ".png";
                 $stmt->bindParam(':avatar', $thePath);
                 $stmt->execute();
 
@@ -86,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['userid'] = $id[0][0];
             $_SESSION['sessionid'] = session_id();
             
-            return new Response($twig->render('register/confirmation.html.twig', ['user' => $prenom,'id'=> $id[0][0]]));
+            return new Response($twig->render('register/confirmation.html.twig', ['user' => $prenom,'session'=>$_SESSION]));
 
         } else {
             $errors[] = 'Erreur lors de l\'inscription. Veuillez réessayer.';
