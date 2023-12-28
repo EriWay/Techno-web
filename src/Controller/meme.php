@@ -6,8 +6,9 @@
 
 use Symfony\Component\HttpFoundation\Response;
 
-$id= $_GET['id'];
-$memename = $_GET['name'];
+// Récupération des paramètres GET
+$id = isset($_GET['id']) ? $_GET['id'] : null;
+$memename = isset($_GET['name']) ? $_GET['name'] : null;
 
 $folder = 'memeFile/'; 
 $memes = array();
@@ -22,4 +23,5 @@ try {
     echo 'Exception : ',  $e->getMessage(), "\n";
 }
 
-return new Response($twig->render('meme/meme.html.twig', ['mem' => $memes, 'id'=>$id, 'memename'=>$memename]));
+// Vérifier si les clés existent avant de les utiliser
+return new Response($twig->render('meme/meme.html.twig', ['mem' => $memes, 'id' => $id, 'memename' => $memename]));
