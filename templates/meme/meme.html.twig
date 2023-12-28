@@ -3,12 +3,12 @@
 {% block title %}Home{% endblock %}
 
 {% block body %}
-{% if memename %}
-    <h1>{{ memename|slice(0,-4) }}</h1> 
-    <img src="../../../memeFile/{{ memename }}" style="max-width:90vw"/>
+{% if id %}
+    <h1>{{ selectedmeme['name'] }}</h1> 
+    <img src="data:image;base64,{{selectedmeme['image']}}" style="max-width:80vw"/>
 {% else %}
     <h1>Les memes</h1>
-    <a href="/meme/post?id={{ id }}" class="btn btn-primary mb-3" style="float: right;">Add Yours !</a>
+    <a href="/meme/post" class="btn btn-primary mb-3" style="float: right;">Add Yours !</a>
 
     <div class="row">
         {% for meme in memes %}
@@ -18,7 +18,7 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ meme.name }}</h5>
                         <p class="card-text">{{ meme.description|slice(0, 100) }}</p>
-                        <a href="/meme?id={{ id }}&name={{ meme.name }}" class="btn btn-primary">Go somewhere</a>
+                        <a href="/meme?id={{ meme.id }}" class="btn btn-primary">Go somewhere</a>
                     </div>
                 </div>
             </div>
