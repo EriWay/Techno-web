@@ -9,7 +9,9 @@
                 <h1>{{ selectedmeme['name'] }}</h1> 
                 <img src="data:image;base64,{{selectedmeme['image']}}" style="max-width:80vw"/>
                 <p>{{ selectedmeme['description'] }}</p>
-                <p>Posted by: <a href="/profil?id={{ selectedmeme['user_id'] }}">{{ selectedmeme['pseudo'] }}</a></p>
+                <p>Posted by: 
+                <img  src="{{ selectedmeme['avatar'] }}" alt="User Avatar" style="border-radius: 50%; width: 30px; height: 30px; object-fit: cover;" />
+                <a href="/profil?id={{ selectedmeme['user_id'] }}">{{ selectedmeme['pseudo'] }}</a></p>
             </div>
             <!-- Section Commentaire -->
             <div class="col-md-6">
@@ -18,11 +20,13 @@
                     <div class="comment-list">
                         {% for commentaire in commentaires %}
                             <div class="comment-box">
-                                <strong onclick="window.location.href='/profil?id={{commentaire.userId}}'">{{ commentaire.pseudo }}</strong>:
-                                <p>{{ commentaire.commentaire }}</p>
-                                {% if session['userid'] == commentaire.userId %}
+                                <strong onclick="window.location.href='/profil?id={{commentaire.userId}}'">
+                                <img  src="{{ commentaire['avatar'] }}" alt="User Avatar" style="border-radius: 50%; width: 30px; height: 30px; object-fit: cover;" /> {{ commentaire['pseudo'] }}
+                                </strong>:                                
+                                <p>{{ commentaire['commentaire'] }}</p>
+                                {% if session['userid'] == commentaire['userId'] %}
                                     <form method="post" action="" class="float-right">
-                                        <button type="submit" value="{{commentaire.id}}" class="btn btn-danger btn-sm">Delete</button>
+                                        <button type="submit" name="delete-comment-id" value="{{ commentaire['id'] }}" class="btn btn-danger btn-sm">Delete</button>
                                     </form>
                                 {% endif %}
                             </div>
@@ -45,7 +49,7 @@
                 
                 {% if session['userid'] == selectedmeme['user_id'] %}
                     <form method="post" action="">
-                        <input type="hidden" name="delete-meme-id" value="{{ selectedmeme.id }}">
+                        <input type="hidden" name="delete-meme-id" value="{{ selectedmeme['id'] }}">
                         <button type="submit" name="delete-meme" value="true" class="btn btn-danger btn-sm">Delete Meme</button>
                     </form>
                 {% endif %}
@@ -62,16 +66,18 @@
             {% for meme in memes %}
                 <div class="col-md-4 mb-4">
                     <div class="card">
-                        <img class="card-img-top" src="data:image;base64,{{ meme.image }}" alt="Meme image">
+                        <img class="card-img-top" src="data:image;base64,{{ meme['image'] }}" alt="Meme image">
                         <div class="card-body">
-                            <h5 class="card-title">{{ meme.name }}</h5>
-                            <p>Posted by: <a href="/profil?id={{ meme.user_id }}">{{ meme.pseudo }}</a></p>
-                            {% if meme.description|length > 25 %}
-                                <p class="card-text">{{ meme.description|slice(0, 25) }}...</p>
+                            <h5 class="card-title">{{ meme['name'] }}</h5>
+                            <p>Posted by: <a href="/profil?id={{ meme['user_id'] }}">
+                            <img  src="{{ meme['avatar'] }}" alt="User Avatar" style="border-radius: 50%; width: 30px; height: 30px; object-fit: cover;" />
+{{ meme['pseudo'] }}</a></p>
+                            {% if meme['description']|length > 25 %}
+                                <p class="card-text">{{ meme['description']|slice(0, 25) }}...</p>
                             {% else %}
-                                <p class="card-text">{{ meme.description }}</p>
+                                <p class="card-text">{{ meme['description'] }}</p>
                             {% endif %}
-                            <a href="/meme?id={{ meme.id }}" class="btn btn-primary">View post</a>
+                            <a href="/meme?id={{ meme['id'] }}" class="btn btn-primary">View post</a>
                         </div>
                     </div>
                 </div>

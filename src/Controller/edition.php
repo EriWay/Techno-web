@@ -2,7 +2,7 @@
 
 use Symfony\Component\HttpFoundation\Response;
 
-// Initialisation de la base de données SQLite
+// Initialisation de la base de donnÃ©es SQLite
 $dbPath = dirname(__DIR__) . '/DB/db.sqlite';
 $pdo = new PDO('sqlite:' . $dbPath);
 
@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $typeFile = explode('.', $nameFile)[1];
 
         $correctType = array("png",'jpg');
-        $uploadDir = dirname(dirname(__DIR__)) ."\public\Avatars/";
+        $uploadDir = dirname(dirname(__DIR__)) ."/public/Avatars/";
 
         if (in_array($typeFile, $correctType)) {
             echo"correct type file";
@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo"not correct type";
         }
     }
-    header("Location: /profil");
+    header("Location: /profil?id=" . $_SESSION['userid']);
     exit();
 }
 
