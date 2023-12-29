@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add your Meme{% endblock %}
+
+{% block body %}
+    <h1>Add your Meme</h1>
+
+    <form method="post" enctype="multipart/form-data" action="" style="display:flex;flex-wrap: wrap;flex-direction: column;align-content: center;">
+        <label for="nom">Name :</label>
+        <input type="text" id="nom" name="nom" required style="width:70vw"><br>
+
+        <label for="description">Description :</label>
+        <input type="text" id="description" name="description" rows="4" style="width:70vw"></input><br>
+
+        <label for="image">Image :</label>
+        <input type="file" id="image" name="image" required style="width:70vw"><br>
+        
+        {% for err in errors %}
+            <p style="color: red;">Error: {{ err }}</p>
+        {% endfor %}
+
+        <input type="submit" value="Add your Meme !">
+    </form>
+{% endblock %}
