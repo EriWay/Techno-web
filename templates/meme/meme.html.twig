@@ -17,7 +17,12 @@
                     <div class="comment-list">
                         {% for commentaire in commentaires %}
                             <div class="comment-box">
-                                <strong>{{ commentaire.prenom }}</strong>:
+                            <style>
+                            strong:hover {
+                                color:#9A1A4A;
+                            }
+                            </style>
+                                <strong onclick="window.location.href='profil?id={{commentaire.userId}}'">{{ commentaire.prenom }}</strong>:
                                 <p>{{ commentaire.commentaire }}</p>
                                 {% if session['userid'] == commentaire.userId %}
                                     <form method="post" action="/delete-comment/{{ commentaire.id }}" class="float-right">
@@ -55,7 +60,7 @@
                         <div class="card-body">
                             <h5 class="card-title">{{ meme.name }}</h5>
                             <p class="card-text">{{ meme.description|slice(0, 100) }}</p>
-                            <a href="/meme?id={{ meme.id }}" class="btn btn-primary">Go somewhere</a>
+                            <a href="/meme?id={{ meme.id }}" class="btn btn-primary">View this meme</a>
                         </div>
                     </div>
                 </div>

@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 if (password_verify($mot_de_passe, $user['mot_de_passe'])) {
                     session_start();
-                    $_SESSION['username'] = $user['nom'];
+                    $_SESSION['username'] = $user['pseudo'];
                     $_SESSION['userid'] = $user['id'];
                     $_SESSION['sessionid'] = session_id();
                     header("Location: /");
