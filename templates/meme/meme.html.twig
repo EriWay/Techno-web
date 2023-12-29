@@ -9,6 +9,7 @@
                 <h1>{{ selectedmeme['name'] }}</h1> 
                 <img src="data:image;base64,{{selectedmeme['image']}}" style="max-width:80vw"/>
                 <p>{{ selectedmeme['description'] }}</p>
+                <p>Posted by: <a href="/profil?id={{ selectedmeme['user_id'] }}">{{ selectedmeme['pseudo'] }}</a></p>
             </div>
             <!-- Section Commentaire -->
             <div class="col-md-6">
@@ -17,16 +18,11 @@
                     <div class="comment-list">
                         {% for commentaire in commentaires %}
                             <div class="comment-box">
-                            <style>
-                            strong:hover {
-                                color:#9A1A4A;
-                            }
-                            </style>
-                                <strong onclick="window.location.href='profil?id={{commentaire.userId}}'">{{ commentaire.prenom }}</strong>:
+                                <strong onclick="window.location.href='/profil?id={{commentaire.userId}}'">{{ commentaire.pseudo }}</strong>:
                                 <p>{{ commentaire.commentaire }}</p>
                                 {% if session['userid'] == commentaire.userId %}
-                                    <form method="post" action="/delete-comment/{{ commentaire.id }}" class="float-right">
-                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                    <form method="post" action="" class="float-right">
+                                        <button type="submit" value="{{commentaire.id}}" class="btn btn-danger btn-sm">Delete</button>
                                     </form>
                                 {% endif %}
                             </div>
@@ -69,6 +65,7 @@
                         <img class="card-img-top" src="data:image;base64,{{ meme.image }}" alt="Meme image">
                         <div class="card-body">
                             <h5 class="card-title">{{ meme.name }}</h5>
+                            <p>Posted by: <a href="/profil?id={{ meme.user_id }}">{{ meme.pseudo }}</a></p>
                             {% if meme.description|length > 25 %}
                                 <p class="card-text">{{ meme.description|slice(0, 25) }}...</p>
                             {% else %}
