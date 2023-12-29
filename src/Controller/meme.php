@@ -1,25 +1,44 @@
 <?php
 
-/** @var Twig\Environment $twig 
- * @var int $id
-*/
-
 use Symfony\Component\HttpFoundation\Response;
+use Doctrine\DBAL\Driver\Connection;
 
-$id= $_GET['id'];
-$memename = $_GET['name'];
+/** @var Twig\Environment $twig 
+ * @var Connection $connection
+ * @var int $id
+ */
 
-$folder = 'memeFile/'; 
-$memes = array();
+$dbPath = dirname(__DIR__) . '/DB/db.sqlite';
+$pdo = new PDO('sqlite:' . $dbPath);
 
-try {
-    if (is_dir($folder)) {
-        $memes = glob($folder . '*.{jpg,jpeg,png,gif}', GLOB_BRACE);
-    } else {
-        echo 'Le répertoire n\'existe pas.';
+session_start();
+
+// Récupération des paramètres GET
+$id = isset($_GET['id']) ? $_GET['id'] : null;//id de l'image selectionee
+
+
+// Requête SQL pour récupérer les memes depuis la base de données
+if (!$id) {
+    $sql = "SELECT * FROM meme";
+    $memes = $connection->fetchAllAssociative($sql);
+
+    // Assurez-vous d'avoir une colonne 'image' dans votre table meme
+    foreach ($memes as &$meme) {
+        // Assumez que 'image' est le nom de la colonne où vous stockez les images dans votre table
+        $meme['image'] = base64_encode($meme['image']); // Convertir l'image en base64 pour l'affichage
     }
-} catch (Exception $e) {
-    echo 'Exception : ',  $e->getMessage(), "\n";
+} else {
+    $stmt = $pdo->prepare('SELECT * FROM meme WHERE id = :id');
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+    $theMeme = $stmt->fetchAll();
+    $theMeme= $theMeme[0];
+    $theMeme['image'] = base64_encode($theMeme['image']);
+
+
 }
 
-return new Response($twig->render('meme/meme.html.twig', ['mem' => $memes, 'id'=>$id, 'memename'=>$memename]));
+
+
+// Vérifier si les clés existent avant de les utiliser
+return new Response($twig->render('meme/meme.html.twig', ['memes' => $memes,'session'=>$_SESSION, 'id' => $id,'selectedmeme'=>$theMeme]));

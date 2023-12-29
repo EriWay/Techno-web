@@ -3,29 +3,26 @@
 {% block title %}Home{% endblock %}
 
 {% block body %}
-{% if memename %}
-    <h1> {{memename|slice(0,-4)}}</h1> 
-    <img src="../../../memeFile/{{memename}}" style="max-width:90vw"/>
-
+{% if id %}
+    <h1>{{ selectedmeme['name'] }}</h1> 
+    <img src="data:image;base64,{{selectedmeme['image']}}" style="max-width:80vw"/>
 {% else %}
     <h1>Les memes</h1>
-    <div style="display:flex;flex-wrap: wrap;justify-content: space-evenly;">
-        {% for img in mem %}
-        <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="../../../{{img}}" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">{{img|slice(9,-4)}}</h5>
-                <p class="card-text">Quality memes</p>
-                <a href="/meme?id={{id}}&name={{img|slice(9)}}" class="btn btn-primary">Go somewhere</a>
+    <a href="/meme/post" class="btn btn-primary mb-3" style="float: right;">Add Yours !</a>
+
+    <div class="row">
+        {% for meme in memes %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <img class="card-img-top" src="data:image;base64,{{ meme.image }}" alt="Meme image">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ meme.name }}</h5>
+                        <p class="card-text">{{ meme.description|slice(0, 100) }}</p>
+                        <a href="/meme?id={{ meme.id }}" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
             </div>
-        </div>
         {% endfor %}
-        <div class="card" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title">Add Yours</h5>
-                <a href="/meme/post?id={{id}}" class="btn btn-primary">Add yours !</a>
-            </div>
-        </div>
     </div>
 {% endif %}
 {% endblock %}

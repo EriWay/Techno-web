@@ -9,9 +9,9 @@ try {
     $table_name = 'utilisateurs';
 
     // Utilisation de la requête DELETE pour vider la table
-    $pdo->exec("DELETE FROM $table_name");
+    $pdo->exec("DROP TABLE $table_name");
 
-    echo "La table $table_name a été vidée avec succès.";
+    echo "La table $table_name a été supprimée avec succès.";
 } catch (PDOException $e) {
     echo "Erreur : " . $e->getMessage();
 }

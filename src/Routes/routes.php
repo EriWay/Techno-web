@@ -10,6 +10,7 @@ $routes->add('fibonacci', new Route('/fibonacci/{nb}', ['nb' => 10], ['nb' => '^
 $routes->add('register', new Route('/register'));
 $routes->add('connect', new Route('/connect'));
 $routes->add('profil', new Route('/profil'));
+$routes->add('edition', new Route('/profil/edit'));
 $routes->add('postmeme', new Route('/meme/post'));
 $routes->add('meme', new Route('/meme'));
 $routes->add('home', new Route('/'));

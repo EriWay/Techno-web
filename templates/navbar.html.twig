@@ -18,20 +18,19 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>                        
             </button>
-            <a class="navbar-brand" href="/?id={{id}}">AllYourMemes.org</a>
+            <a class="navbar-brand" href="/">AllYourMemes.org</a>
         </div>
         <div class="collapse navbar-collapse" id="myNavbar">
             <ul class="nav navbar-nav flex-row">
-                <li><a href="/?id={{id}}">Home</a></li>
-                <li><a href="/hello">Hello</a></li>
-                <li><a href="/meme?id={{id}}">Memes</a></li>
+                <li><a href="/">Home</a></li>
+                <li><a href="/meme">Memes</a></li>
 
             </ul>
             <ul class="nav navbar-nav navbar-right flex-row">
             
-                {% if id %}
+                {% if session['userid'] %}
                 <span class="float-right">
-                    <img class="img-thumbnail rounded-circle" style="max-width:75px;" src="../../../Avatars/avatar{{id}}.png" alt="Avatar" onclick="window.location.href='/profil?id={{id}}'">
+                    <img class="img-thumbnail rounded-circle" style="max-width:75px;" src="../../../Avatars/avatar{{session['userid']}}.png" alt="Avatar" onclick="window.location.href='/profil'">
                 </span>
                 {% else %}
                 <li><a href="/register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>

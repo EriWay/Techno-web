@@ -44,6 +44,10 @@ class User
     private string $mot_de_passe;
 
     #[ORM\Column(type:'string')]
+
+    private string $pseudo;
+
+    #[ORM\Column(type:'string')]
     #[Assert\NotBlank]
     private string $avatar;
 
