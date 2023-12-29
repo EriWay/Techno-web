@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Traitement du formulaire
     // Si pas d'erreurs, retourne à l'accueil
     if (empty($errors)) {
-        $query = "SELECT nom, prenom, mot_de_passe, id FROM utilisateurs WHERE email = :email";
+        $query = "SELECT nom, prenom, mot_de_passe, id, pseudo FROM utilisateurs WHERE email = :email";
         $stmt = $pdo->prepare($query);
 
         // Vérifiez si la préparation de la requête a réussi
@@ -32,7 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'nom' => $res[0]['nom'],
                     'prenom' => $res[0]['prenom'],
                     'mot_de_passe' => $res[0]['mot_de_passe'],
-                    'id' => $res[0]['id']
+                    'id' => $res[0]['id'],
+                    'pseudo' => $res[0]['pseudo']
                 ];
 
                 if (password_verify($mot_de_passe, $user['mot_de_passe'])) {
@@ -41,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $_SESSION['userid'] = $user['id'];
                     $_SESSION['sessionid'] = session_id();
                     header("Location: /");
-                    die();
+                    exit();
                 } else {
                     $errors[] = "L'adresse email ou le mot de passe est invalide";
                 }

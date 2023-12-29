@@ -7,13 +7,14 @@
         <div class="row">
             <div class="col-md-6" style="position: sticky; top: 0; height: 100vh; overflow-y: auto;">
                 <h1>{{ selectedmeme['name'] }}</h1> 
-                <img src="data:image;base64,{{selectedmeme['image']}}" style="max-width:80vw"/>
+                {% if selectedmeme['image'] %}
+                    <img src="data:image;base64,{{selectedmeme['image']}}" style="max-width:35vw; height:auto;" />
+                {% endif %}
                 <p>{{ selectedmeme['description'] }}</p>
                 <p>Posted by: 
                 <img  src="{{ selectedmeme['avatar'] }}" alt="User Avatar" style="border-radius: 50%; width: 30px; height: 30px; object-fit: cover;" />
                 <a href="/profil?id={{ selectedmeme['user_id'] }}">{{ selectedmeme['pseudo'] }}</a></p>
             </div>
-            <!-- Section Commentaire -->
             <div class="col-md-6">
                 <h2>Comments</h2>
                 {% if commentaires is not empty %}

@@ -10,5 +10,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 session_start();
+$sessionUsername = isset($_SESSION['username']) ? $_SESSION['username'] : null;
 
-return new Response($twig->render('home/home.html.twig', ['session'=>$_SESSION, 'name'=> $_SESSION['username']]));
+return new Response($twig->render('home/home.html.twig', ['session' => $_SESSION, 'name' => $sessionUsername]));
