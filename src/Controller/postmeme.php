@@ -36,10 +36,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Déplacer l'image vers le répertoire d'upload
             if (move_uploaded_file($tmpFile, $uploadPath)) {
                 // Insérer les informations du meme dans la base de données
-                $sql = "INSERT INTO meme (name, description, image, publicationDate, user_id) VALUES (:name, :description, :image, :publicationDate, :user_id)";
+                $sql = "INSERT INTO meme (name, description, user_id, image, publicationDate) VALUES (:name, :description, :id, :image, :publicationDate)";
                 $stmt = $pdo->prepare($sql);
                 $stmt->bindValue(':name', $nom);
                 $stmt->bindValue(':description', $description);
+                $stmt->bindValue(':id', $_SESSION['userid']);
                 $stmt->bindValue(':image', file_get_contents($uploadPath), PDO::PARAM_LOB);
                 $stmt->bindValue(':publicationDate', date('Y-m-d H:i:s'), PDO::PARAM_STR);
                 // Ajout : Bind user_id
