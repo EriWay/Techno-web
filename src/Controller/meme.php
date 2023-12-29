@@ -16,7 +16,9 @@ session_start();
 // Récupération des paramètres GET
 $id = isset($_GET['id']) ? $_GET['id'] : null; // id de l'image sélectionnée
 
-// Requête SQL pour récupérer les memes depuis la base de données
+$theMeme = null; // Ajoutez cette ligne pour initialiser la variable
+$commentaires = null; // Ajoutez cette ligne pour initialiser la variable
+
 if (!$id) {
     $sql = "SELECT * FROM meme";
     $memes = $connection->fetchAllAssociative($sql);
@@ -30,8 +32,7 @@ if (!$id) {
     $stmt = $pdo->prepare('SELECT * FROM meme WHERE id = :id');
     $stmt->bindParam(':id', $id);
     $stmt->execute();
-    $theMeme = $stmt->fetchAll();
-    $theMeme = $theMeme[0];
+    $theMeme = $stmt->fetch();
     $theMeme['image'] = base64_encode($theMeme['image']);
 
     $commentaires = [];
@@ -39,7 +40,7 @@ if (!$id) {
     $stmt->bindParam(':meme_id', $id);
     $stmt->execute();
     $commentaires = $stmt->fetchAll();
-    
+
     // Ajout d'un commentaire
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comment'])) {
         $comment = trim($_POST['comment']); // Supprimer les espaces au début et à la fin du commentaire
@@ -61,6 +62,59 @@ if (!$id) {
             }
         }
     }
+
+    // Suppression du mème
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete-meme']) && $_POST['delete-meme'] === 'true') {
+
+        // Vérifier si la variable POST 'delete-meme' existe et contient la valeur attendue
+            // Vérifier si la variable POST 'delete-meme-id' existe
+            if (isset($_POST['delete-meme-id'])) {
+                $deleteMemeId = $_POST['delete-meme-id'];
+
+                // Vérifier si l'utilisateur est connecté
+                if (isset($_SESSION['userid'])) {
+                    $userId = $_SESSION['userid'];
+
+                    // Récupérer l'auteur du mème
+                    $stmt = $pdo->prepare('SELECT user_id FROM meme WHERE id = :id');
+                    $stmt->bindParam(':id', $deleteMemeId);
+                    $stmt->execute();
+                    $memeAuthorId = $stmt->fetchColumn();
+
+                    // Vérifier si l'utilisateur est l'auteur du mème
+                    if ($memeAuthorId == $userId) {
+                        // L'utilisateur est l'auteur du mème, supprimer le mème
+                        $stmt = $pdo->prepare('DELETE FROM meme WHERE id = :id');
+                        $stmt->bindParam(':id', $deleteMemeId);
+                        $stmt->execute();
+
+                        // Rediriger l'utilisateur après la suppression
+                        header('Location: /meme'); // Remplacez par l'URL souhaitée après la suppression
+                        exit();
+                    } else {
+                        // L'utilisateur n'est pas l'auteur du mème
+                        echo "Vous n'êtes pas l'auteur du mème."; // Message de débogage
+                    }
+                } else {
+                    // L'utilisateur n'est pas connecté
+                    echo "Vous devez être connecté pour supprimer un mème."; // Message de débogage
+                }
+            } else {
+                // La variable POST 'delete-meme-id' est manquante
+                echo "L'identifiant du mème à supprimer est manquant."; // Message de débogage
+            }
+    }else {
+        echo "flemme"; 
+    }
+
+
 }
+
 // Vérifier si les clés existent avant de les utiliser
-return new Response($twig->render('meme/meme.html.twig', ['memes' => $memes, 'session' => $_SESSION, 'id' => $id, 'selectedmeme' => $theMeme, 'commentaires' => $commentaires]));
+return new Response($twig->render('meme/meme.html.twig', [
+    'memes' => $memes,
+    'session' => $_SESSION,
+    'id' => $id,
+    'selectedmeme' => $theMeme,
+    'commentaires' => $commentaires
+]));
