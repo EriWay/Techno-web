@@ -5,7 +5,7 @@
 {% block body %}
     {% if id %}
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-6" style="position: sticky; top: 0; height: 100vh; overflow-y: auto;">
                 <h1>{{ selectedmeme['name'] }}</h1> 
                 <img src="data:image;base64,{{selectedmeme['image']}}" style="max-width:80vw"/>
                 <p>{{ selectedmeme['description'] }}</p>
@@ -16,12 +16,12 @@
                 {% if commentaires is not empty %}
                     <div class="comment-list">
                         {% for commentaire in commentaires %}
-                            <div class="comment">
+                            <div class="comment-box">
                                 <strong>{{ commentaire.prenom }}</strong>:
                                 <p>{{ commentaire.commentaire }}</p>
-                                {% if session['userid'] == commentaire.user.id %}
-                                    <form method="post" action="/delete-comment/{{ commentaire.id }}">
-                                        <button type="submit">Delete</button>
+                                {% if session['userid'] == commentaire.userId %}
+                                    <form method="post" action="/delete-comment/{{ commentaire.id }}" class="float-right">
+                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                                     </form>
                                 {% endif %}
                             </div>
@@ -39,7 +39,7 @@
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
                 {% else %}
-                    <p>You cannot comment on this meme.</p>
+                    <p>You have to be connected to post any comments.</p>
                 {% endif %}
             </div>
         </div>
