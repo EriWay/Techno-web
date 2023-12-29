@@ -4,8 +4,35 @@
 
 {% block body %}
 {% if id %}
-    <h1>{{ selectedmeme['name'] }}</h1> 
-    <img src="data:image;base64,{{selectedmeme['image']}}" style="max-width:80vw"/>
+    <div class="row">
+        <div class="col-md-6">
+            <h1>{{ selectedmeme['name'] }}</h1> 
+            <img src="data:image;base64,{{selectedmeme['image']}}" style="max-width:80vw"/>
+            <p>{{ selectedmeme['description'] }}</p>
+        </div>
+        <div class="col-md-6">
+            <!-- Section Commentaire -->
+            <h2>Comments</h2>
+            {% if commentaires is not empty %}
+                <ul>
+                    {% for commentaire in commentaires %}
+                        <li>{{ commentaire['commentaire'] }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No comments yet.</p>
+            {% endif %}
+            {% if session['userid'] %} {# Ajout de la condition pour commenter #}
+                <form method="post" action="/meme?id={{ id }}">
+                    <label for="comment">Add a comment:</label>
+                    <textarea id="comment" name="comment" rows="4" required></textarea>
+                    <button type="submit">Submit</button>
+                </form>
+            {% else %}
+                <p>You cannot comment on this meme.</p>
+            {% endif %}
+        </div>
+    </div>
 {% else %}
     <h1>Les memes</h1>
     <a href="/meme/post" class="btn btn-primary mb-3" style="float: right;">Add Yours !</a>

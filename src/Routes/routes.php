@@ -13,5 +13,6 @@ $routes->add('profil', new Route('/profil'));
 $routes->add('postmeme', new Route('/meme/post'));
 $routes->add('meme', new Route('/meme'));
 $routes->add('home', new Route('/'));
+$routes->add('drop_table', new Route('/suppr'));
 
 return $routes;
