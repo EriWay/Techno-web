@@ -34,13 +34,12 @@ if (!$id) {
     $theMeme = $theMeme[0];
     $theMeme['image'] = base64_encode($theMeme['image']);
 
-    // Récupérer les commentaires liés à ce meme
     $commentaires = [];
-    $stmt = $pdo->prepare('SELECT * FROM commentaire WHERE meme_id = :meme_id');
+    $stmt = $pdo->prepare('SELECT commentaire.*, utilisateurs.prenom FROM commentaire JOIN utilisateurs ON commentaire.userId = utilisateurs.id WHERE meme_id = :meme_id');
     $stmt->bindParam(':meme_id', $id);
     $stmt->execute();
     $commentaires = $stmt->fetchAll();
-
+    
     // Ajout d'un commentaire
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comment'])) {
         $comment = trim($_POST['comment']); // Supprimer les espaces au début et à la fin du commentaire
