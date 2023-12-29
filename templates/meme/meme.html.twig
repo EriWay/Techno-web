@@ -46,12 +46,22 @@
                 {% else %}
                     <p>You have to be connected to post any comments.</p>
                 {% endif %}
+                
+                {% if session['userid'] == selectedmeme['user_id'] %}
+                    <form method="post" action="">
+                        <input type="hidden" name="delete-meme-id" value="{{ selectedmeme.id }}">
+                        <button type="submit" name="delete-meme" value="true" class="btn btn-danger btn-sm">Delete Meme</button>
+                    </form>
+                {% endif %}
             </div>
         </div>
     {% else %}
         <h1>Les memes</h1>
-        <a href="/meme/post" class="btn btn-primary mb-3" style="float: right;">Add Yours !</a>
-
+        {% if session['userid'] %}
+            <a href="/meme/post" class="btn btn-primary mb-3" style="float: right;">Add Yours !</a>
+        {% else %}
+            <a class="btn btn-primary mb-3" style="float: right;">Please connect to share your memes!</a>
+        {% endif %}
         <div class="row">
             {% for meme in memes %}
                 <div class="col-md-4 mb-4">
@@ -59,8 +69,12 @@
                         <img class="card-img-top" src="data:image;base64,{{ meme.image }}" alt="Meme image">
                         <div class="card-body">
                             <h5 class="card-title">{{ meme.name }}</h5>
-                            <p class="card-text">{{ meme.description|slice(0, 100) }}</p>
-                            <a href="/meme?id={{ meme.id }}" class="btn btn-primary">View this meme</a>
+                            {% if meme.description|length > 25 %}
+                                <p class="card-text">{{ meme.description|slice(0, 25) }}...</p>
+                            {% else %}
+                                <p class="card-text">{{ meme.description }}</p>
+                            {% endif %}
+                            <a href="/meme?id={{ meme.id }}" class="btn btn-primary">View post</a>
                         </div>
                     </div>
                 </div>
