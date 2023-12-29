@@ -17,6 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
     $mot_de_passe = $_POST['mot_de_passe'];
     $confirmation_mot_de_passe = $_POST['confirmation_mot_de_passe'];
+    $pseudo = $_POST['pseudo'];
 
 
 
@@ -26,26 +27,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Vérifiez si l'adresse e-mail existe déjà dans la base de données
-    $emailExistsQuery = "SELECT COUNT(*) FROM utilisateurs WHERE email = :email";
+    $emailExistsQuery = "SELECT COUNT(*) FROM utilisateurs WHERE email = :email OR pseudo = :pseudo";
     $stmt = $pdo->prepare($emailExistsQuery);
     $stmt->bindParam(':email', $email);
+    $stmt->bindParam(':pseudo', $pseudo);
     $stmt->execute();
     $emailExists = $stmt->fetchColumn();
     if ($emailExists) {
-        $errors[] = "l'email est déjà utilisé !!";
+        $errors[] = "l'email ou le pseudo est déjà utilisé !!";
         return new Response($twig->render('register/register.html.twig', ['errors' => $errors]));
     }
     $mdp = password_hash($mot_de_passe, PASSWORD_DEFAULT);
     // Si pas d'erreurs, insérez dans la base de données
     if (empty($errors) || $emailExists) {
         $avatarPath = "Avatars/Avatar";
-        $query = "INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe, avatar) VALUES (:nom, :prenom, :email, :mot_de_passe, :avatar)";
+        $query = "INSERT INTO utilisateurs (nom, prenom, email, mot_de_passe, avatar, pseudo) VALUES (:nom, :prenom, :email, :mot_de_passe, :avatar, :pseudo)";
         $stmt = $pdo->prepare($query);
         $stmt->bindParam(':nom', $nom);
         $stmt->bindParam(':prenom', $prenom);
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':mot_de_passe', $mdp);
         $stmt->bindParam(':avatar', $avatarPath);
+        $stmt->bindParam(':pseudo', $pseudo);
         
 
         if ($stmt->execute()) {
@@ -79,11 +82,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             // Redirige l'utilisateur vers une autre page après l'inscription réussie
             session_start();
-            $_SESSION['username'] = $nom;
+            $_SESSION['username'] = $pseudo;
             $_SESSION['userid'] = $id[0][0];
             $_SESSION['sessionid'] = session_id();
 
-            return new Response($twig->render('register/confirmation.html.twig', ['user' => $prenom,'session'=>$_SESSION]));
+            return new Response($twig->render('register/confirmation.html.twig', ['session'=>$_SESSION]));
 
         } else {
             $errors[] = 'Erreur lors de l\'inscription. Veuillez réessayer.';

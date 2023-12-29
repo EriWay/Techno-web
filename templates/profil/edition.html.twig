@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edition{% endblock %}
+
+{% block body %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<h1>Edition du profil</h1>
+<form method="post" enctype="multipart/form-data" action="" style="display:flex;flex-wrap: wrap;flex-direction: column;align-content: center;">
+        <label for="nom">Nom :</label>
+        <input type="text" id="nom" name="nom"style="width:70vw" value="{{user['nom']}}"><br>
+
+        <label for="prenom">Prénom :</label>
+        <input type="text" id="prenom" name="prenom" style="width:70vw" value="{{user['prenom']}}"><br>
+
+        <label for="email">E-mail :</label>
+        <input type="email" id="email" name="email" style="width:70vw" value="{{user['email']}}"><br>
+
+        <label for="pseudo">Pseudo :</label>
+        <input type="text" id="pseudo" name="pseudo"style="width:70vw" value="{{user['pseudo']}}"><br>
+
+        <label for="avatar">Avatar :</label>
+        <input type = "file" id = "avatar" name = "avatar"><br>
+
+        <label for="mot_de_passe">Mot de passe :</label>
+        <input type="password" id="mot_de_passe" name="mot_de_passe"style="width:70vw"><br>
+
+        <label for="confirmation_mot_de_passe">Confirmez le mot de passe :</label>
+        <input type="password" id="confirmation_mot_de_passe" name="confirmation_mot_de_passe" style="width:70vw"><br>
+        {% for err in errors %}
+        Err:{{err}}<br>
+        {% endfor %}
+
+        <input type="submit" value="Modifier">
+    </form>
+{% endblock %}
