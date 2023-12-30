@@ -1,7 +1,7 @@
 
 # TP Techno Web PHP
 
-Ce projet utilise les technos web pour créer un site de type forum sur lequel on peut intéragir autour d'images humoristiques (meme)
+Ce projet utilise les technos web pour créer un site de type forum sur lequel on peut interagir autour d'images humoristiques (meme)
 
 
 ## Déploiement
