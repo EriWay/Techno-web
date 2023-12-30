@@ -5,13 +5,42 @@
 {% block body %}
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
-    <h1>Profil de : {{session['username']}} <a href="/profil/edit"><span class="glyphicon glyphicon-pencil"></span></a></h1>
-    ID compte : {{session['userid']}} | {{user[0]}}<br>
-    Tenu par : {{user[1]}}{{user[2]}}<br>
+    <h1>Profil de : {{session['username']}} {% if session['userid'] == id %} <a href="/profil/edit"><span class="glyphicon glyphicon-pencil"></span></a> {% endif %} </h1>
+
+    Tenu par : {{user[2]}} {{user[1]|slice(0,1)}}.<br>
 
     Avatar : <img src = "../../../{{user[4]}}" alt="Avatar" style ="max-width:100px; max-heigth:100px"/>
-
+    {% if session['userid'] == id %}
     <form action="/" method="POST">
-        <input type="submit" value="Deconnexion" />
+        <label>
+        <style>
+        a span {
+            color: #337AB7;
+        }
+        a:hover, a:hover span {
+            color: #23527C;
+        }
+        </style>
+            <input type="submit" value="Deconnexion" style="display:none;">
+            <a><span class="glyphicon glyphicon-log-out" style="font-size:3em"></span></a> 
+        </label>
     </form>
+    {% endif %}
+    {% if memes %}
+    <h2>Memes posted by {{session['username']}}</h2>
+    <div class="row">
+            {% for meme in memes %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img class="card-img-top" src="data:image;base64,{{ meme.image }}" alt="Meme image">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ meme.name }}</h5>
+                            <p class="card-text">{{ meme.description|slice(0, 100) }}</p>
+                            <a href="/meme?id={{ meme.id }}" class="btn btn-primary">View this meme</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 {% endblock %}

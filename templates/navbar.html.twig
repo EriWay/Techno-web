@@ -30,7 +30,7 @@
             
                 {% if session['userid'] %}
                 <span class="float-right">
-                    <img class="img-thumbnail rounded-circle" style="max-width:75px;" src="../../../Avatars/avatar{{session['userid']}}.png" alt="Avatar" onclick="window.location.href='/profil'">
+                    <img class="img-thumbnail rounded-circle" style="max-width:75px;" src="../../../Avatars/avatar{{session['userid']}}.png" alt="Avatar" onclick="window.location.href='/profil?id={{session['userid']}}'">
                 </span>
                 {% else %}
                 <li><a href="/register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>

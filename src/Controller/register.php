@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $typeFile = explode('.', $nameFile)[1];
 
                 $correctType = array("png",'jpg');
-                $uploadDir = dirname(dirname(__DIR__)) ."\public\Avatars/";
+                $uploadDir = dirname(dirname(__DIR__)) ."/public/Avatars/";
 
                 if (in_array($typeFile, $correctType)) {
                     echo"correct type file";

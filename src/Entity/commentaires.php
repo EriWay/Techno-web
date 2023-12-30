@@ -7,13 +7,17 @@ use Repository\CommentaireRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CommentaireRepository::class)]
-#[ORM\Table(name: 'commentaire')]
+#[ORM\Table(name: 'commentaires')]
 class Commentaire
 {
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue]
     private int|null $id = null;
+
+    #[ORM\ManyToOne(targetEntity: Meme::class, inversedBy: 'commentaires')]
+    #[ORM\JoinColumn(name: 'meme_id', referencedColumnName: 'id')]
+    private Meme $meme;
 
     #[ORM\Column(type: 'integer')]
     private int $userId;
@@ -24,7 +28,6 @@ class Commentaire
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $commentaire = null;
 
-    // Ajoutez d'autres propriétés au besoin...
 
     public function getId(): ?int
     {

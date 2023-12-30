@@ -1,28 +1,88 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Memes{% endblock %}
 
 {% block body %}
-{% if id %}
-    <h1>{{ selectedmeme['name'] }}</h1> 
-    <img src="data:image;base64,{{selectedmeme['image']}}" style="max-width:80vw"/>
-{% else %}
-    <h1>Les memes</h1>
-    <a href="/meme/post" class="btn btn-primary mb-3" style="float: right;">Add Yours !</a>
-
-    <div class="row">
-        {% for meme in memes %}
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <img class="card-img-top" src="data:image;base64,{{ meme.image }}" alt="Meme image">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ meme.name }}</h5>
-                        <p class="card-text">{{ meme.description|slice(0, 100) }}</p>
-                        <a href="/meme?id={{ meme.id }}" class="btn btn-primary">Go somewhere</a>
+    {% if id %}
+        <div class="row">
+            <div class="col-md-6" style="background-color:white;z-index:1;position: sticky; top: 0; height: auto; overflow-y: auto;">
+                <h1>{{ selectedmeme['name'] }}</h1> 
+                {% if selectedmeme['image'] %}
+                    <img src="data:image;base64,{{selectedmeme['image']}}" style="max-width:100%; height:auto;" />
+                {% endif %}
+                <p>{{ selectedmeme['description'] }}</p>
+                <p>Posted by: 
+                <img  src="{{ selectedmeme['avatar'] }}" alt="User Avatar" style="border-radius: 50%; width: 30px; height: 30px; object-fit: cover;" />
+                <a href="/profil?id={{ selectedmeme['user_id'] }}">{{ selectedmeme['pseudo'] }}</a></p>
+            </div>
+            <div class="col-md-6">
+                <h2>Comments</h2>
+                {% if commentaires is not empty %}
+                    <div class="comment-list">
+                        {% for commentaire in commentaires %}
+                            <div class="comment-box">
+                                <strong onclick="window.location.href='/profil?id={{commentaire.userId}}'">
+                                <img  src="{{ commentaire['avatar'] }}" alt="User Avatar" style="border-radius: 50%; width: 30px; height: 30px; object-fit: cover;" /> {{ commentaire['pseudo'] }}
+                                </strong>:                                
+                                <p>{{ commentaire['commentaire'] }}</p>
+                                {% if session['userid'] == commentaire['userId'] %}
+                                    <form method="post" action="" class="float-right">
+                                        <button type="submit" name="delete-comment-id" value="{{ commentaire['id'] }}" class="btn btn-danger btn-sm">Delete</button>
+                                    </form>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p>No comments yet.</p>
+                {% endif %}
+                {% if session['userid'] %}
+                    <form method="post" action="/meme?id={{ id }}">
+                        <div class="form-group">
+                            <label for="comment">Add a comment:</label>
+                            <textarea id="comment" name="comment" rows="4" class="form-control" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                {% else %}
+                    <p>You have to be connected to post any comments.</p>
+                {% endif %}
+                
+                {% if session['userid'] == selectedmeme['user_id'] %}
+                    <form method="post" action="">
+                        <input type="hidden" name="delete-meme-id" value="{{ selectedmeme['id'] }}">
+                        <button type="submit" name="delete-meme" value="true" class="btn btn-danger btn-sm">Delete Meme</button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    {% else %}
+        <h1>Les memes</h1>
+        {% if session['userid'] %}
+            <a href="/meme/post" class="btn btn-primary mb-3">Add Yours !</a>
+        {% else %}
+            <a class="btn btn-primary mb-3">Please connect to share your memes!</a>
+        {% endif %}
+        <div class="row">
+            {% for meme in memes %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img class="card-img-top" src="data:image;base64,{{ meme['image'] }}" alt="Meme image">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ meme['name'] }}</h5>
+                            <p>Posted by: <a href="/profil?id={{ meme['user_id'] }}">
+                            <img  src="{{ meme['avatar'] }}" alt="User Avatar" style="border-radius: 50%; width: 30px; height: 30px; object-fit: cover;" />
+{{ meme['pseudo'] }}</a></p>
+                            {% if meme['description']|length > 25 %}
+                                <p class="card-text">{{ meme['description']|slice(0, 25) }}...</p>
+                            {% else %}
+                                <p class="card-text">{{ meme['description'] }}</p>
+                            {% endif %}
+                            <a href="/meme?id={{ meme['id'] }}" class="btn btn-primary">View post</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
-    </div>
-{% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
 {% endblock %}

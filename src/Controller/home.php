@@ -4,13 +4,26 @@
 
 use Symfony\Component\HttpFoundation\Response;
 
+$dbPath = dirname(__DIR__) . '/DB/db.sqlite';
+$pdo = new PDO('sqlite:' . $dbPath);
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     session_start();
-    echo'Deconnexion';
     session_destroy();
 }
 
 session_start();
-print_r($_SESSION);
+$sessionUsername = isset($_SESSION['username']) ? $_SESSION['username'] : null;
 
-return new Response($twig->render('home/home.html.twig', ['session'=>$_SESSION, 'name'=> $_SESSION['username']]));
+$sql='SELECT image, COUNT(*) OVER () AS total FROM meme';
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$result = $stmt->fetchAll();
+
+$randomMeme=rand(0,$result[0][1]-1);
+
+$memeAccueil=$result[$randomMeme][0];
+
+$memeAccueil = base64_encode($memeAccueil);
+
+return new Response($twig->render('home/home.html.twig', ['session' => $_SESSION, 'name' => $sessionUsername, 'memeaccueil'=>$memeAccueil]));
