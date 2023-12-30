@@ -42,9 +42,9 @@ if (!$id) {
     $theMeme['image'] = base64_encode($theMeme['image']);
 
     $commentaires = [];
-    $stmt = $pdo->prepare('SELECT commentaire.*, utilisateurs.pseudo, utilisateurs.avatar 
-                          FROM commentaire 
-                          JOIN utilisateurs ON commentaire.userId = utilisateurs.id 
+    $stmt = $pdo->prepare('SELECT commentaires.*, utilisateurs.pseudo, utilisateurs.avatar 
+                          FROM commentaires 
+                          JOIN utilisateurs ON commentaires.userId = utilisateurs.id 
                           WHERE meme_id = :meme_id');
     $stmt->bindParam(':meme_id', $id);
     $stmt->execute();
@@ -61,7 +61,7 @@ if (!$id) {
                 $userId = $_SESSION['userid'];
 
                 // Insérer le commentaire dans la base de données
-                $sql = "INSERT INTO commentaire (userId, date, commentaire, meme_id) VALUES (:userId, :date, :commentaire, :memeId)";
+                $sql = "INSERT INTO commentaires (userId, date, commentaire, meme_id) VALUES (:userId, :date, :commentaire, :memeId)";
                 $stmt = $pdo->prepare($sql);
                 $stmt->bindParam(':userId', $userId);
                 $stmt->bindParam(':date', date('Y-m-d H:i:s'));
@@ -84,7 +84,7 @@ if (!$id) {
             $userId = $_SESSION['userid'];
 
             // Récupérer l'auteur du commentaire
-            $stmt = $pdo->prepare('SELECT userId FROM commentaire WHERE id = :commentId');
+            $stmt = $pdo->prepare('SELECT userId FROM commentaires WHERE id = :commentId');
             $stmt->bindParam(':commentId', $commentIdToDelete);
             $stmt->execute();
             $commentAuthorId = $stmt->fetchColumn();
@@ -92,7 +92,7 @@ if (!$id) {
             // Vérifier si l'utilisateur est l'auteur du commentaire
             if ($commentAuthorId == $userId) {
                 // L'utilisateur est l'auteur du commentaire, supprimer le commentaire
-                $stmt = $pdo->prepare('DELETE FROM commentaire WHERE id = :commentId');
+                $stmt = $pdo->prepare('DELETE FROM commentaires WHERE id = :commentId');
                 $stmt->bindParam(':commentId', $commentIdToDelete);
                 $stmt->execute();
 

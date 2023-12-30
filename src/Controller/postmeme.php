@@ -29,28 +29,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $correctType = array("png", 'jpg', "gif");
 
         if (in_array($typeFile, $correctType)) {
-            // Chemin où l'image sera stockée
-            $uploadDir = dirname(dirname(__DIR__)) . "/public/memeFile/";
-            $uploadPath = $uploadDir . $nom . "." . $typeFile;
 
-            // Déplacer l'image vers le répertoire d'upload
-            if (move_uploaded_file($tmpFile, $uploadPath)) {
                 // Insérer les informations du meme dans la base de données
                 $sql = "INSERT INTO meme (name, description, user_id, image, publicationDate) VALUES (:name, :description, :user_id, :image, :publicationDate)";
                 $stmt = $pdo->prepare($sql);
                 $stmt->bindValue(':name', $nom);
                 $stmt->bindValue(':description', $description);
                 $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
-                $stmt->bindValue(':image', file_get_contents($uploadPath), PDO::PARAM_LOB);
+                $stmt->bindValue(':image', file_get_contents($tmpFile), PDO::PARAM_LOB);
                 $stmt->bindValue(':publicationDate', date('Y-m-d H:i:s'), PDO::PARAM_STR);
                 $stmt->execute();
 
                 // Rediriger vers la page des memes
                 header("Location: /meme");
                 exit;
-            } else {
-                $errors[] = "Erreur lors de l'upload de l'image.";
-            }
+
         } else {
             $errors[] = "Type de fichier non pris en charge. Utilisez les formats : png, jpg, gif.";
         }

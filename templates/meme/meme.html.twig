@@ -1,14 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Memes{% endblock %}
 
 {% block body %}
     {% if id %}
         <div class="row">
-            <div class="col-md-6" style="position: sticky; top: 0; height: 100vh; overflow-y: auto;">
+            <div class="col-md-6" style="background-color:white;z-index:1;position: sticky; top: 0; height: auto; overflow-y: auto;">
                 <h1>{{ selectedmeme['name'] }}</h1> 
                 {% if selectedmeme['image'] %}
-                    <img src="data:image;base64,{{selectedmeme['image']}}" style="max-width:35vw; height:auto;" />
+                    <img src="data:image;base64,{{selectedmeme['image']}}" style="max-width:100%; height:auto;" />
                 {% endif %}
                 <p>{{ selectedmeme['description'] }}</p>
                 <p>Posted by: 
@@ -59,9 +59,9 @@
     {% else %}
         <h1>Les memes</h1>
         {% if session['userid'] %}
-            <a href="/meme/post" class="btn btn-primary mb-3" style="float: right;">Add Yours !</a>
+            <a href="/meme/post" class="btn btn-primary mb-3">Add Yours !</a>
         {% else %}
-            <a class="btn btn-primary mb-3" style="float: right;">Please connect to share your memes!</a>
+            <a class="btn btn-primary mb-3">Please connect to share your memes!</a>
         {% endif %}
         <div class="row">
             {% for meme in memes %}

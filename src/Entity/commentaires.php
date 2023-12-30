@@ -7,7 +7,7 @@ use Repository\CommentaireRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CommentaireRepository::class)]
-#[ORM\Table(name: 'commentaire')]
+#[ORM\Table(name: 'commentaires')]
 class Commentaire
 {
     #[ORM\Id]

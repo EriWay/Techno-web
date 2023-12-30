@@ -58,12 +58,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $uploadDir = dirname(dirname(__DIR__)) ."/public/Avatars/";
 
         if (in_array($typeFile, $correctType)) {
-            echo"correct type file";
             if (move_uploaded_file($tmpFile,$uploadDir . "avatar" . $_SESSION['userid'] . ".png")) {
-                echo"Uploaded !";
             }
-        } else {
-            echo"not correct type";
         }
     }
     header("Location: /profil?id=" . $_SESSION['userid']);
