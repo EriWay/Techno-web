@@ -12,6 +12,7 @@ Pour déployer ce projet :
 
 ```bash
   composer i
+  composer update
 ```
 puis
 ```bash
