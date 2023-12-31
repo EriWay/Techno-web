@@ -72,12 +72,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $uploadDir = dirname(dirname(__DIR__)) ."/public/Avatars/";
 
                 if (in_array($typeFile, $correctType)) {
-                    echo"correct type file";
+                    
                     if (move_uploaded_file($tmpFile,$uploadDir . "avatar" . $id[0][0] . ".png")) {
-                        echo"Uploaded !";
+                        
                     }
                 } else {
-                    echo"not correct type";
+                    $erreur[] = " le format de l'image doit être en png ou en Jpeg";
                 }
             }
             // Redirige l'utilisateur vers une autre page après l'inscription réussie

@@ -82,7 +82,7 @@ input[type=submit] {
         <label for="confirmation_mot_de_passe">Confirmez le mot de passe :</label>
         <input type="password" id="confirmation_mot_de_passe" name="confirmation_mot_de_passe" required style="width:70vw"><br>
         {% for err in errors %}
-        Err:{{err}}<br>
+        {{err}}<br>
         {% endfor %}
 
         <input type="submit" value="S'inscrire">
