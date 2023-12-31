@@ -16,4 +16,5 @@ $routes->add('meme', new Route('/meme'));
 $routes->add('home', new Route('/'));
 $routes->add('drop_table', new Route('/suppr'));
 
+
 return $routes;
