@@ -14,7 +14,7 @@ Pour déployer ce projet :
   composer i
   composer update
 ```
-puis
+puis pour lancer le serveur
 ```bash
   php -S 127.0.0.1:8000 -t public
 ```
